@@ -1,0 +1,14 @@
+package id.fazzbca.library.validators;
+
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
+import id.fazzbca.library.models.Author;
+
+public class AuthorValidation {
+    public void validateAuthor(Author author){
+        if (author == null || Objects.isNull(author)) {
+            throw new NoSuchElementException("Author is not found");
+        }
+    }
+}
