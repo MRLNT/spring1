@@ -1,12 +1,12 @@
 package id.fazzbca.library.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -20,40 +20,38 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "books")
-public class Book {
+@Table(name = "borrows")
+public class Borrow {
     @Id
     @UuidGenerator
     private String id;
 
-    @Column(length = 100)
-    private String title;
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
-    @Column(length = 4)
-    private String year;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    private LocalDate borrowDate;
     
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private Author author;
+    private LocalDate dueDate;
 
-    @ManyToOne
-    @JoinColumn(name = "publisher_id")
-    private Publisher publisher;
+    private LocalDate returnDate;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-    
+
     @UpdateTimestamp
     private LocalDateTime updateAt;
-    
-    private Boolean isDeleted = false;
 
-    private Boolean isAvailable = true;
+    private Boolean returned = false;
 
-    public Book(String title, String year, Author author, Publisher publisher) {
-        this.title = title;
-        this.year = year;
-        this.author = author;
-        this.publisher = publisher;
+    public Borrow(Book book, User user, LocalDate borrowDate, LocalDate dueDate) {
+        this.book = book;
+        this.user = user;
+        this.borrowDate = borrowDate;
+        this.dueDate = dueDate;
     }
 }
